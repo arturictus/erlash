@@ -36,16 +36,15 @@ raise Myerror.new(context: {user_id: 1, request_id: 120, controller: 'users_cont
 
 ```ruby
 class MyError < Erlash::Base;
-  problem -> { |e| "Please user `#{e.context[:user_id]}` be careful" }
+  problem -> { |e| "Please user `#{context[:user_id]}` be careful" }
   summary "This error usually happens when user is desperate for the bug"
-  resolution -> { "User.find(#{e.context[:user_id]}).fix" }
+  resolution -> { "User.find(#{context[:user_id]}).fix" }
 end
 
 raise Myerror.new(context: {user_id: 1, request_id: 120, controller: 'users_controller'})
 # Myerror:
-
-# Problem:
-#   Please user `1` be careful
+# Please user `1` be careful
+#
 # Summary:
 #   This error usually happens when user is desperate for the bug
 #   blablabla
