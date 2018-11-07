@@ -22,4 +22,7 @@ module Erlash
   end
 end
 
+require 'erlash/formatters/template_formatter'
 require 'erlash/formatters/array_formatter'
+require 'erlash/formatters/hash_formatter'
+require 'erlash/formatters/tip_formatter'

@@ -34,18 +34,9 @@ module Erlash
 
     def set_formatter
       formatter.tap do |f|
-        if problem
-          f << 'Problem:'
-          f << "  #{problem}"
-        end
-        if sumary
-          f << 'Sumary:'
-          f << "  #{sumary}"
-        end
-        if resolution
-          f << 'Resolution:'
-          f << "  #{resolution}"
-        end
+        f << Tip.new('Problem:', problem) if problem
+        f << Tip.new('Sumary:', sumary) if sumary
+        f << Tip.new('Resolution:', resolution) if resolution
         if context
           f << 'Context:' if problem || sumary || resolution
           f << context

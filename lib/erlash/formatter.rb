@@ -10,6 +10,16 @@ module Erlash
       end
     end
 
+    def self.format(inst, obj)
+      registry = inst.registry
+      formatter = registry.find(obj.class)
+      if formatter
+        formatter.format(inst, obj)
+      else
+        obj.to_s
+      end
+    end
+
     attr_reader :registry, :output, :objs, :options
     def initialize(registry, options = {})
       @registry = registry
@@ -23,17 +33,18 @@ module Erlash
     end
 
     def to_s
+      return @to_s if defined?(@to_s)
       objs.each do |e|
         output.puts format_elem(e)
       end
-      output.string
+      @to_s = output.string
     end
     alias_method :string, :to_s
 
     private
 
     def format_elem(elem)
-      self.class.call(self, elem)
+      self.class.format(self, elem)
     end
   end
 end

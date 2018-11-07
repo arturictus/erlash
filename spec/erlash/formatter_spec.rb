@@ -9,7 +9,9 @@ module Erlash
 
     it do
       registry = Formatters.new
-      registry.register(String, proc {|e| "I'm string" })
+      registry.register(String, Class.new(TemplateFormatter) do
+        def format; "I'm string" end
+      end)
       inst = Formatter.new(registry)
       inst << 'blabla'
       expect(inst.string).to eq "I'm string\n"

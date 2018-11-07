@@ -5,15 +5,15 @@ module Erlash
   #     ArrayFormatter.new([1, 2]).to_s
   #     #=> - 1
   #         - 2
-  class ArrayFormatter < TemplateFormatter
+  class TipFormatter < TemplateFormatter
 
-    Erlash.formatters.register Array, self
+    Erlash.formatters.register Tip, self
 
     def format
-      object.each_with_object([]) do |e, s|
-        s << "  - #{format_elem(e)}"
+      [].tap do |acc|
+        acc << object.title
+        acc << "  #{object.description}"
       end
     end
-
   end
 end
