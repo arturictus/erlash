@@ -1,11 +1,23 @@
 module Erlash
   class Formatters
-    def initialize
-      @db = Fusu::HashWithIndifferentAccess.new
-    end
+    include Enumerable
 
     def find(klass)
-      db[Klass]
+      db[klass]
+    end
+
+    def register(klass, val, opts = {})
+      db[klass] = val
+    end
+
+    def each(&block)
+      db.each(&block)
+    end
+
+    private
+
+    def db
+      @db ||= Fusu::HashWithIndifferentAccess.new
     end
   end
 end

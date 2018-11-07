@@ -4,11 +4,7 @@ require "fusu"
 module Erlash
   class << self
     def formatters
-      {
-        'Array' => ArrayFormatter,
-        # 'Hash' => HashFormatter,
-        # 'String' => StringFormatter
-      }
+      @formatters ||= Formatters.new
     end
 
     def add_formatter_for(klass, formatter)

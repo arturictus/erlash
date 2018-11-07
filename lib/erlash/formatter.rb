@@ -1,9 +1,21 @@
 module Erlash
   class Formatter
-    attr_reader :output, :objs
-    def initialize
+    def self.call(inst, obj)
+      registry = inst.registry
+      formatter = registry.find(obj.class)
+      if formatter
+        formatter.call(inst, obj)
+      else
+        obj.to_s
+      end
+    end
+
+    attr_reader :registry, :output, :objs, :options
+    def initialize(registry, options = {})
+      @registry = registry
       @output = StringIO.new
       @objs = []
+      @options = options
     end
 
     def <<(elem)
@@ -16,15 +28,12 @@ module Erlash
       end
       output.string
     end
+    alias_method :string, :to_s
 
     private
 
     def format_elem(elem)
-      # if Formatter
-      #   formatter.new(obj, output: output)
-      # else
-      #   to_s
-      elem.to_s
+      self.class.call(self, elem)
     end
   end
 end

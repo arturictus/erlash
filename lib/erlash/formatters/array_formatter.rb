@@ -2,22 +2,38 @@ module Erlash
 
   # Given an array will format as a list
   # example:
-  #     ArrayFormatter.new([1, 2]).error_message
+  #     ArrayFormatter.new([1, 2]).to_s
   #     #=> - 1
   #         - 2
   class ArrayFormatter
-    attr_reader :object, :opts, :output
-    def initialize(object, opts = {})
+
+    Erlash.formatters.register Array, self
+
+    def self.call(*args)
+      new(*args)
+    end
+
+    attr_reader :object, :opts, :output, :formatter
+    def initialize(formatter, object, opts = {})
       @object = object
       @opts = opts
-      @output = opts[:output] || StringIO.new
+      @formatter = formatter
+      @output = formatter.output
+    end
+
+    def call
+      object.each_with_object(output) do |e, s|
+        s.puts "  - #{format(e)}"
+      end
     end
 
     def to_s
-      object.each_with_object(output) do |e, s|
-        s.puts "  - #{e}"
-      end
+      call
       output.string
+    end
+
+    def format(elem)
+      Formatter.call(formatter, elem)
     end
   end
 end

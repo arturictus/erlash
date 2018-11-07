@@ -53,8 +53,12 @@ module Erlash
       end
     end
 
+    def registry
+      Erlash.formatters
+    end
+
     def formatter
-      @formatter ||= Formatter.new
+      @formatter ||= Formatter.new(registry)
     end
 
     def exec_config(val)
