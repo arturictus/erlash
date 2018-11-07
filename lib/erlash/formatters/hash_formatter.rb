@@ -1,10 +1,7 @@
 module Erlash
-
-  # Given an array will format as a list
-  # example:
-  #     HashFormatter.new(formatter, {foo: 'foo', bar: 'bar'}).to_s
-  #     #=> - foo: `foo`
-  #         - bar: `bar`
+  # ex:
+  #    - foo: `foo`
+  #    - bar: `bar`
   class HashFormatter < TemplateFormatter
 
     Erlash.formatters.register Hash, self

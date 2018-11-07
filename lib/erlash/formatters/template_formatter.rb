@@ -1,8 +1,8 @@
 module Erlash
   # ex:
   #    class HelloFormatter < TemplateFormatter
-  #      def call
-  #        output.puts object.greetings
+  #      def format
+  #        object.greetings
   #      end
   #    end
   class TemplateFormatter
@@ -11,9 +11,8 @@ module Erlash
       new(*args).safe_call; nil
     end
 
-    def self.format(formatter, object, opts = {})
-      f = Formatter.new(formatter.registry)
-      new(f, object, opts).format
+    def self.format(*args)
+      new(*args).format
     end
 
     attr_reader :object, :opts, :output, :formatter
@@ -42,9 +41,9 @@ module Erlash
     protected
 
     def call
-      Fusu::Array.wrap(format).each do |e|
-        output.puts e
-      end
+      @call ||= Fusu::Array.wrap(format).each do |e|
+                  output.puts e
+                end && true
     end
   end
 end
