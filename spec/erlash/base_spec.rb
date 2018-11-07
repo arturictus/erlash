@@ -26,36 +26,29 @@ module Erlash
     end
 
     it "raising instance works" do
-      msg = <<~MSG
-            ExampleError: Problem:
-              problem
-            Sumary:
-              sumary
-            Resolution:
-              resolution
-            Context:
-            hello
-            MSG
-
       expect {
         raise ExampleError.new(context: 'hello')
-      }.to raise_error(ExampleError)#.with_message("")
+      }.to raise_error(ExampleError)
     end
     it "raising constant works" do
-      msg = <<~MSG
-            ExampleError: Problem:
-              problem
-            Sumary:
-              sumary
-            Resolution:
-              resolution
-            Context:
-            hello
-            MSG
-
       expect {
         raise ExampleError
-      }.to raise_error(ExampleError)#.with_message("")
+      }.to raise_error(ExampleError)
+    end
+
+    describe 'context' do
+      it do
+        b = described_class.new(context: [1, 2, 3])
+        expect(b.message).to eq("  - 1\n  - 2\n  - 3\n")
+      end
+      it do
+        b = described_class.new(context: { user_id: 1, name: 'John'})
+        expect(b.message).to eq("  - user_id: 1\n  - name: John\n")
+      end
+      it do
+        b = described_class.new(context: { user_id: 1, name: 'John', emails: ['a', 'b', {upa:'yep'}, [1,2, [4]]]})
+        expect(b.message).to eq("  - user_id: 1\n  - name: John\n")
+      end
     end
   end
 end
