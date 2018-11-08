@@ -7,19 +7,24 @@ module Erlash
     Erlash.formatters.register Array, self
 
     def format
-      # object.each_with_object([]) do |e, s|
+      object.each_with_object(['']) do |e, s|
+        s << "- #{format_elem(e)}"
+      end
+    end
 
-        objs = recursive_nesting(object)
-        objs.each_with_object([]) do |n, s|
-          if n.val.is_a?(Hash)
-            format_elem(n.val).each do |fh|
-              s << "#{"  "*n.offset}#{fh}"
-            end
-          else
-            s << " #{"  "*n.offset} - #{format_elem(n.val)}"
+    private
+
+    def recursive_format
+      objs = recursive_nesting(object)
+      objs.each_with_object([]) do |n, s|
+        if n.val.is_a?(Hash)
+          format_elem(n.val).each do |fh|
+            s << "#{"  "*n.offset}#{fh}"
           end
-        end.flatten.join("\n")
-      # end
+        else
+          s << " #{"  "*n.offset} - #{format_elem(n.val)}"
+        end
+      end.flatten.join("\n")
     end
 
     def recursive_nesting(e, acc = [], offset = 0)
