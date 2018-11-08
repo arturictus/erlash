@@ -8,7 +8,12 @@ module Erlash
 
     def format
       object.each_with_object([]) do |(k, v), s|
-        s << "  - #{k}: #{format_elem(v)}"
+        if v.is_a?(Array)
+          s << "  - #{k}:"
+          s << "#{format_elem(v)}"
+        else
+          s << "  - #{k}: #{format_elem(v)}"
+        end
       end
     end
   end
