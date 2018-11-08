@@ -30,6 +30,10 @@ module Erlash
       @resolution ||= exec_config self.class.instance_variable_get(:@resolution)
     end
 
+    def hints?
+      !!(problem || sumary || resolution)
+    end
+
     private
 
     def set_formatter
@@ -37,10 +41,7 @@ module Erlash
         f << Tip.new('Problem:', problem) if problem
         f << Tip.new('Sumary:', sumary) if sumary
         f << Tip.new('Resolution:', resolution) if resolution
-        if context
-          f << 'Context:' if problem || sumary || resolution
-          f << context
-        end
+        f << Context.new(self, context)
       end
     end
 

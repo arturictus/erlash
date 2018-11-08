@@ -46,7 +46,7 @@ module Erlash
         expect(b.message).to eq("  - user_id: 1\n  - name: John\n")
       end
       it do
-        b = described_class.new(context: { user_id: 1, name: 'John', emails: [{upa:'yep', ho: :foo}, {boom: 'ho'}]})
+        b = described_class.new(context: { user_id: 1, name: 'John', emails: ['email@ex.com', 'bu@email.com']})
         expect(b.message).to eq("  - user_id: 1\n  - name: John\n")
       end
     end

@@ -14,6 +14,7 @@ module Erlash
   end
 end
 require 'erlash/tip'
+require 'erlash/context'
 require 'erlash/base'
 require 'erlash/formatter'
 require 'erlash/formatters'

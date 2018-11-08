@@ -7,11 +7,5 @@ module Erlash
       ArrayFormatter.call(formatter, [1, 2])
       expect(formatter.to_s).to eq(expected)
     end
-
-
-    it do
-      out = recursive_nesting([1,[2, 3,[4, 5]]])
-      expect(out).to eq([])
-    end
   end
 end
