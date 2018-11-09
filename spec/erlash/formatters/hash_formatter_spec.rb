@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Erlash
-  describe ArrayFormatter do
+  describe HashFormatter do
     it 'formats as list' do
-      expected = "  - 1\n  - 2\n"
+      expected = "  - foo: bar\n  - bar: foo\n"
       formatter = Formatter.new(Formatters.new)
-      described_class.call(formatter, [1, 2])
+      described_class.call(formatter, {foo: :bar, bar: :foo})
       expect(formatter.to_s).to eq(expected)
     end
   end

@@ -1,8 +1,8 @@
 module Erlash
   describe Base do
     it 'when only context' do
-      b = described_class.new(context: "hello\n")
-      expect(b.message).to eq("hello\n")
+      b = described_class.new(context: "hello")
+      expect(b.message).to eq("`hello`\n")
     end
 
     it 'when set simple strings as hints' do
@@ -12,7 +12,7 @@ module Erlash
         resolution 'resolution'
       end
       b = klass.new(context: 'hello')
-      expect(b.message).to eq("Problem:\n  this is a problem\nSumary:\n  sumary\nResolution:\n  resolution\nContext:\nhello\n")
+      expect(b.message).to eq("Problem:\n  this is a problem\nSumary:\n  sumary\nResolution:\n  resolution\nContext:\n`hello`\n")
     end
 
     it 'when procs as hints' do
@@ -22,7 +22,7 @@ module Erlash
         resolution {|context| "resolution #{context}" }
       end
       b = klass.new(context: 'hello')
-      expect(b.message).to eq("Problem:\n  problem hello\nSumary:\n  sumary hello\nResolution:\n  resolution hello\nContext:\nhello\n")
+      expect(b.message).to eq("Problem:\n  problem hello\nSumary:\n  sumary hello\nResolution:\n  resolution hello\nContext:\n`hello`\n")
     end
 
     it "raising instance works" do
@@ -43,11 +43,7 @@ module Erlash
       end
       it do
         b = described_class.new(context: { user_id: 1, name: 'John'})
-        expect(b.message).to eq("  - user_id: 1\n  - name: John\n")
-      end
-      it do
-        b = described_class.new(context: { user_id: 1, name: 'John', emails: ['email@ex.com', 'bu@email.com']})
-        expect(b.message).to eq("  - user_id: 1\n  - name: John\n")
+        expect(b.message).to eq("  - user_id: 1\n  - name: `John`\n")
       end
     end
   end

@@ -43,7 +43,7 @@ module Erlash
     def call
       @call ||= Fusu::Array.wrap(format).each do |e|
                   output.puts e
-                end && true
+                end
     end
   end
 end

@@ -1,10 +1,10 @@
 require 'spec_helper'
 module Erlash
-  describe ArrayFormatter do
-    it 'formats as list' do
-      expected = "  - 1\n  - 2\n"
+  describe StringFormatter do
+    it 'adds quotes to the string' do
+      expected = "`hello`\n"
       formatter = Formatter.new(Formatters.new)
-      described_class.call(formatter, [1, 2])
+      described_class.call(formatter, 'hello')
       expect(formatter.to_s).to eq(expected)
     end
   end
