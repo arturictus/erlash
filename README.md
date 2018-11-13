@@ -25,7 +25,7 @@ Or install it yourself as:
 ```ruby
 class MyError < Erlash::Base; end
 
-raise Myerror.new(context: {user_id: 1, request_id: 120, controller: 'users_controller'})
+raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
 # Myerror:
 #
 # Context:
@@ -41,7 +41,7 @@ class MyError < Erlash::Base;
   resolution -> { "User.find(#{context[:user_id]}).fix" }
 end
 
-raise Myerror.new(context: {user_id: 1, request_id: 120, controller: 'users_controller'})
+raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
 # Myerror:
 # Please user `1` be careful
 #
@@ -54,6 +54,28 @@ raise Myerror.new(context: {user_id: 1, request_id: 120, controller: 'users_cont
 #   - user_id: 1
 #   - request_id: 120
 #   - controller: `users_controller`
+```
+
+### Add formatters
+```ruby
+class User
+  def email
+    "mail@example.com"
+  end
+  def id; 1 end
+end
+
+class Erlash::UserFormatter < Erlash::TemplateFormatter
+  def format
+    "id: #{object.id}, email: #{object.email}"
+  end
+end
+
+Erlash.formatters.register(User, Erlash::UserFormatter)
+
+class RequestError < Erlash::Base; end
+RequestError.new(request_id: '123', user: User.new, endpoint: 'PUT /users/1', params: {email: "another@email.com"})
+
 ```
 
 ## Development

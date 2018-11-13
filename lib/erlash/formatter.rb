@@ -5,6 +5,8 @@ module Erlash
       formatter = registry.find(obj.class)
       if formatter
         formatter.call(inst, obj)
+      elsif obj.respond_to?(:to_erlash)
+        obj.to_erlash
       else
         obj.to_s
       end

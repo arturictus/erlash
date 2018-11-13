@@ -1,7 +1,7 @@
 module Erlash
   describe Base do
     it 'when only context' do
-      b = described_class.new(context: "hello")
+      b = described_class.new("hello")
       expect(b.message).to eq("`hello`\n")
     end
 
@@ -11,7 +11,7 @@ module Erlash
         sumary 'sumary'
         resolution 'resolution'
       end
-      b = klass.new(context: 'hello')
+      b = klass.new('hello')
       expect(b.message).to eq("Problem:\n  this is a problem\nSumary:\n  sumary\nResolution:\n  resolution\nContext:\n`hello`\n")
     end
 
@@ -21,13 +21,13 @@ module Erlash
         sumary {|context| "sumary #{context}" }
         resolution {|context| "resolution #{context}" }
       end
-      b = klass.new(context: 'hello')
+      b = klass.new('hello')
       expect(b.message).to eq("Problem:\n  problem hello\nSumary:\n  sumary hello\nResolution:\n  resolution hello\nContext:\n`hello`\n")
     end
 
     it "raising instance works" do
       expect {
-        raise ExampleError.new(context: 'hello')
+        raise ExampleError.new('hello')
       }.to raise_error(ExampleError)
     end
     it "raising constant works" do
@@ -38,12 +38,29 @@ module Erlash
 
     describe 'context' do
       it do
-        b = described_class.new(context: [1, 2, 3])
+        b = described_class.new([1, 2, 3])
         expect(b.message).to eq("  - 1\n  - 2\n  - 3\n")
       end
       it do
-        b = described_class.new(context: { user_id: 1, name: 'John'})
+        b = described_class.new(user_id: 1, name: 'John')
         expect(b.message).to eq("  - user_id: 1\n  - name: `John`\n")
+      end
+      it 'passing hash defaults to context' do
+        b = described_class.new(user_id: 1, name: 'John')
+        expect(b.message).to eq("  - user_id: 1\n  - name: `John`\n")
+      end
+      describe 'passing object responding to `to_s`' do
+        class ExampleClass
+          def to_s
+            "This is and ExampleClass"
+          end
+        end
+
+        it 'builds messge with the objects to_s string' do
+          inst = ExampleClass.new
+          b = described_class.new(inst)
+          expect(b.message).to eq("#{inst.to_s}\n")
+        end
       end
     end
   end

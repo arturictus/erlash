@@ -11,30 +11,30 @@ module Erlash
         @resolution = block || arg
       end
     end
-    attr_reader :params, :context
+    attr_reader :input
 
-    def initialize(params = {})
-      @params = params
-      @context = params[:context]
+    def initialize(input = nil, opts = {})
+      @input = input
+      @opts = opts
       set_formatter
       super(formatter.to_s)
     end
 
     def problem
-      @problem ||= exec_config self.class.instance_variable_get(:@problem)
+      @problem ||= exec_config(self.class.instance_variable_get(:@problem))
     end
     def sumary
-      @sumary ||= exec_config self.class.instance_variable_get(:@sumary)
+      @sumary ||= exec_config(self.class.instance_variable_get(:@sumary))
     end
     def resolution
-      @resolution ||= exec_config self.class.instance_variable_get(:@resolution)
+      @resolution ||= exec_config(self.class.instance_variable_get(:@resolution))
     end
 
     def hints?
       !!(problem || sumary || resolution)
     end
 
-    private
+    # private
 
     def set_formatter
       formatter.tap do |f|
@@ -51,6 +51,17 @@ module Erlash
 
     def formatter
       @formatter ||= Formatter.new(registry)
+    end
+
+    def context
+      @context ||= case input
+                   when Array
+                     Erlash::MainArray.build(input)
+                   when Hash
+                     Erlash::MainHash.build(input)
+                   else
+                     input
+                   end
     end
 
     def exec_config(val)

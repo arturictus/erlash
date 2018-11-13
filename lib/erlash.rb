@@ -6,15 +6,12 @@ module Erlash
     def formatters
       @formatters ||= Formatters.new
     end
-
-    def add_formatter_for(klass, formatter)
-      formaters[klass.to_s] = formatter
-    end
-
   end
 end
 require 'erlash/tip'
 require 'erlash/context'
 require 'erlash/base'
+require 'erlash/main_array'
+require 'erlash/main_hash'
 require 'erlash/formatter'
 require 'erlash/formatters'

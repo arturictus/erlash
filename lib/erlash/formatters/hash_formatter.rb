@@ -7,9 +7,10 @@ module Erlash
     Erlash.formatters.register Hash, self
 
     def format
-      object.each_with_object([]) do |(k, v), s|
-        s << "  - #{k}: #{format_elem(v)}"
-      end
+      elems = object.each_with_object([]) do |(k,v), o|
+                o << "#{k}: #{v}"
+              end
+      "{ #{elems.join(", ")} }"
     end
 
     def experimental_formatting
