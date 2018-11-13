@@ -1,0 +1,9 @@
+Problem:
+  User is unable to update his email
+Sumary:
+  Validation errors: email already token
+Context:
+  - request_id: `123`
+  - user: { id: 1, email: `mail@example.com` }
+  - endpoint: `PUT /users/1`
+  - params: { email: `another@email.com` }

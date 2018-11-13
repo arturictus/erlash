@@ -34,7 +34,7 @@ module Erlash
       !!(problem || sumary || resolution)
     end
 
-    # private
+    private
 
     def set_formatter
       formatter.tap do |f|

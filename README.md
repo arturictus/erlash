@@ -1,8 +1,34 @@
 # Erlash
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/erlash`. To experiment with that code, run `bin/console` for an interactive prompt.
+Erlash is a easy way to create meaningful errors.
+The ruby implementation for errors is hard and tedious to create errors that explain
+what exactly the error was.
+In production you can find errors that do not explain the context that made the error
+occur finding errors like:
 
-TODO: Delete this and the text above, and describe your gem
+```
+ValidationError:
+  email already token
+```
+
+Wouldn't be nice to have more information about the error?
+example:
+```
+RequestError:
+ Problem:
+   User is unable to update his email
+ Sumary:
+   Validation errors: email already token
+ Context:
+   - request_id: `123`
+   - user: { id: 1, email: `mail@example.com` }
+   - endpoint: `PUT /users/1`
+   - params: { email: `another@email.com` }
+```
+
+To build this kind of errors with the standard library is very tedious and not reusable.
+With erlash creating meaningful errors is easy.
+
 
 ## Installation
 
@@ -27,8 +53,6 @@ class MyError < Erlash::Base; end
 
 raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
 # Myerror:
-#
-# Context:
 #   - user_id: 1
 #   - request_id: 120
 #   - controller: `users_controller`
@@ -43,22 +67,56 @@ end
 
 raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
 # Myerror:
-# Please user `1` be careful
-#
-# Summary:
-#   This error usually happens when user is desperate for the bug
-#   blablabla
-# Resolution:
-#   User.find(1).fix
-# Context:
-#   - user_id: 1
-#   - request_id: 120
-#   - controller: `users_controller`
+#  Problem:
+#    Please user `1` be careful
+#  Summary:
+#    This error usually happens when user is desperate for the bug
+#    blablabla
+#  Resolution:
+#    User.find(1).fix
+#  Context:
+#    - user_id: 1
+#    - request_id: 120
+#    - controller: `users_controller`
 ```
 
-### Add formatters
-```ruby
+### Formatters
+Erlash is fully customizable.
+You can add formatters for your objects or override the default ones.
 
+__Create your formatter:__
+
+Create a class that inherits from `Erlash::TemplateFormatter` and add a `format`
+method to it.
+
+```ruby
+class MyUserFormatter < Erlash::TemplateFormatter
+  def format
+    "And the name is: #{object.name}"
+  end
+end
+```
+
+__To register your formatter:__
+
+When registering a formatter you should provide the class is going to format as first argument.
+Arguments:
+- class to be formatted, ex: `User`
+- formatter for given class, ex: `MyUserFormatter`
+
+```ruby
+Erlash.formatters.register(User, MyUserFormatter)
+```
+
+__Erlash::TemplateFormatter__
+
+Accessible methods:
+- `object`: is an instance of the registered class. in the example `User` instance
+- `format_elem([_object_])`: will try to find a formatter for given object if not will default `to_s`
+
+example:
+
+```ruby
 class User
   def email
     "mail@example.com"
@@ -74,7 +132,7 @@ class Erlash::UserFormatter < Erlash::TemplateFormatter
     format_elem({
       id: object.id,
       email: object.email
-    })
+    }) # it will be formatted by the registered formatter for Hash
   end
 end
 
@@ -88,7 +146,6 @@ class RequestError < Erlash::Base
 end
 
 raise RequestError.new(request_id: '123', user: User.new, endpoint: 'PUT /users/1', params: {email: "another@email.com"})
-# =>
 # RequestError:
 #   Problem:
 #     User is unable to update his email
@@ -101,6 +158,19 @@ raise RequestError.new(request_id: '123', user: User.new, endpoint: 'PUT /users/
 #     - params: { email: `another@email.com` }
 ```
 
+Default formatters:
+
+─ `Array` => `Erlash::ArrayFormatter`
+─ `Hash` => `Erlash::HashFormatter`
+─ `String` => `Erlash::StringFormatter`
+
+Custom Erlash classes:
+
+─ `Erlash::Tip` => `Erlash::TipFormatter`
+─ `Erlash::Context` => `Erlash::ContextFormatter`
+─ `Erlash::MainArray` => `Erlash::MainArrayFormatter`
+─ `Erlash::MainHash` => `Erlash::MainHashFormatter`
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -109,7 +179,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/erlash. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/arturictus/erlash. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 

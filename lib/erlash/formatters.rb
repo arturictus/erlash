@@ -22,11 +22,9 @@ module Erlash
   end
 end
 
+# first require template
 require 'erlash/formatters/template_formatter'
-require 'erlash/formatters/main_array_formatter'
-require 'erlash/formatters/main_hash_formatter'
-require 'erlash/formatters/array_formatter'
-require 'erlash/formatters/hash_formatter'
-require 'erlash/formatters/tip_formatter'
-require 'erlash/formatters/context_formatter'
-require 'erlash/formatters/string_formatter'
+# then the rest of formatters
+Dir[File.expand_path("./formatters", __dir__) + "**/*rb"].each do |f|
+  require f
+end
