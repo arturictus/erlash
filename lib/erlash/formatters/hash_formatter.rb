@@ -8,7 +8,7 @@ module Erlash
 
     def format
       elems = object.each_with_object([]) do |(k,v), o|
-                o << "#{k}: #{v}"
+                o << "#{k}: #{format_elem(v)}"
               end
       "{ #{elems.join(", ")} }"
     end
