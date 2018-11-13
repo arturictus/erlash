@@ -53,7 +53,7 @@ Or install it yourself as:
 ```ruby
 class MyError < Erlash::Base; end
 
-raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
+raise Myerror, { user_id: 1, request_id: 120, controller: 'users_controller' }
 # Myerror:
 #   - user_id: 1
 #   - request_id: 120
@@ -67,7 +67,7 @@ class MyError < Erlash::Base;
   resolution -> { |context| "User.find(#{context[:user_id]}).fix" }
 end
 
-raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
+raise Myerror, { user_id: 1, request_id: 120, controller: 'users_controller' }
 # Myerror:
 #  Problem:
 #    Please user `1` be careful

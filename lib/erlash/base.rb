@@ -10,12 +10,18 @@ module Erlash
       def resolution(arg = nil, &block)
         @resolution = block || arg
       end
+      def display_context(arg)
+        @display_context = arg
+      end
+      def _display_context
+        defined?(@display_context) ? @display_context : true
+      end
     end
-    attr_reader :input
+    attr_reader :input, :opts
 
     def initialize(input = nil, opts = {})
       @input = input
-      @opts = opts
+      @opts = default_opts.merge(opts)
       set_formatter
       super(formatter.to_s)
     end
@@ -41,8 +47,17 @@ module Erlash
         f << Tip.new('Problem:', problem) if problem
         f << Tip.new('Summary:', summary) if summary
         f << Tip.new('Resolution:', resolution) if resolution
-        f << Context.new(self, context)
+        f << Context.new(self, context) if display_context?
       end
+    end
+
+    def default_opts
+      {
+        display_context: self.class._display_context
+      }
+    end
+    def display_context?
+      opts[:display_context]
     end
 
     def registry
