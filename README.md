@@ -3,8 +3,9 @@
 Erlash is a easy way to create meaningful errors.
 The ruby implementation for errors is hard and tedious to create errors that explain
 what exactly the error was.
-In production you can find errors that do not explain the context that made the error
-occur finding errors like:
+In production you can find errors that do not explain the context and gives you no clue what's going on.
+
+You can find errors like:
 
 ```
 ValidationError:
@@ -12,12 +13,13 @@ ValidationError:
 ```
 
 Wouldn't be nice to have more information about the error?
+
 example:
 ```
 RequestError:
  Problem:
    User is unable to update his email
- Sumary:
+ Summary:
    Validation errors: email already token
  Context:
    - request_id: `123`
@@ -60,9 +62,9 @@ raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
 
 ```ruby
 class MyError < Erlash::Base;
-  problem -> { |e| "Please user `#{context[:user_id]}` be careful" }
+  problem -> { |context| "Please user `#{context[:user_id]}` be careful" }
   summary "This error usually happens when user is desperate for the bug"
-  resolution -> { "User.find(#{context[:user_id]}).fix" }
+  resolution -> { |context| "User.find(#{context[:user_id]}).fix" }
 end
 
 raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
@@ -71,7 +73,6 @@ raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
 #    Please user `1` be careful
 #  Summary:
 #    This error usually happens when user is desperate for the bug
-#    blablabla
 #  Resolution:
 #    User.find(1).fix
 #  Context:
@@ -101,8 +102,8 @@ __To register your formatter:__
 
 When registering a formatter you should provide the class is going to format as first argument.
 Arguments:
-- class to be formatted, ex: `User`
-- formatter for given class, ex: `MyUserFormatter`
+- class to be formatted. ex: `User`
+- formatter for given class. ex: `MyUserFormatter`
 
 ```ruby
 Erlash.formatters.register(User, MyUserFormatter)
@@ -112,7 +113,9 @@ __Erlash::TemplateFormatter__
 
 Accessible methods:
 - `object`: is an instance of the registered class. in the example `User` instance
-- `format_elem([_object_])`: will try to find a formatter for given object if not will default `to_s`
+- `format_elem`: will try to find a formatter for given object if not will default `to_s`
+
+  * args: [object]
 
 example:
 
@@ -140,7 +143,7 @@ Erlash.formatters.register(User, Erlash::UserFormatter)
 
 class RequestError < Erlash::Base
   problem "User is unable to update his email"
-  sumary do |context|
+  summary do |context|
     "Validation errors: #{context[:user].errors}"
   end
 end
@@ -149,7 +152,7 @@ raise RequestError.new(request_id: '123', user: User.new, endpoint: 'PUT /users/
 # RequestError:
 #   Problem:
 #     User is unable to update his email
-#   Sumary:
+#   Summary:
 #     Validation errors: email already token
 #   Context:
 #     - request_id: `123`
@@ -160,16 +163,16 @@ raise RequestError.new(request_id: '123', user: User.new, endpoint: 'PUT /users/
 
 Default formatters:
 
-─ `Array` => `Erlash::ArrayFormatter`
-─ `Hash` => `Erlash::HashFormatter`
-─ `String` => `Erlash::StringFormatter`
+* `Array` => `Erlash::ArrayFormatter`
+* `Hash` => `Erlash::HashFormatter`
+* `String` => `Erlash::StringFormatter`
 
 Custom Erlash classes:
 
-─ `Erlash::Tip` => `Erlash::TipFormatter`
-─ `Erlash::Context` => `Erlash::ContextFormatter`
-─ `Erlash::MainArray` => `Erlash::MainArrayFormatter`
-─ `Erlash::MainHash` => `Erlash::MainHashFormatter`
+* `Erlash::Tip` => `Erlash::TipFormatter`
+* `Erlash::Context` => `Erlash::ContextFormatter`
+* `Erlash::MainArray` => `Erlash::MainArrayFormatter`
+* `Erlash::MainHash` => `Erlash::MainHashFormatter`
 
 ## Development
 

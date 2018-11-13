@@ -1,6 +1,6 @@
 Problem:
   User is unable to update his email
-Sumary:
+Summary:
   Validation errors: email already token
 Context:
   - request_id: `123`

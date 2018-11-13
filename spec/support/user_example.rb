@@ -22,7 +22,7 @@ Erlash.formatters.register(User, Erlash::UserFormatter)
 
 class RequestError < Erlash::Base
   problem "User is unable to update his email"
-  sumary do |context|
+  summary do |context|
     "Validation errors: #{context[:user].errors}"
   end
 end

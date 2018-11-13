@@ -8,21 +8,21 @@ module Erlash
     it 'when set simple strings as hints' do
       klass = Class.new(described_class) do
         problem 'this is a problem'
-        sumary 'sumary'
+        summary 'summary'
         resolution 'resolution'
       end
       b = klass.new('hello')
-      expect(b.message).to eq("Problem:\n  this is a problem\nSumary:\n  sumary\nResolution:\n  resolution\nContext:\n`hello`\n")
+      expect(b.message).to eq("Problem:\n  this is a problem\nSummary:\n  summary\nResolution:\n  resolution\nContext:\n`hello`\n")
     end
 
     it 'when procs as hints' do
       klass = Class.new(described_class) do
         problem {|context| "problem #{context}" }
-        sumary {|context| "sumary #{context}" }
+        summary {|context| "summary #{context}" }
         resolution {|context| "resolution #{context}" }
       end
       b = klass.new('hello')
-      expect(b.message).to eq("Problem:\n  problem hello\nSumary:\n  sumary hello\nResolution:\n  resolution hello\nContext:\n`hello`\n")
+      expect(b.message).to eq("Problem:\n  problem hello\nSummary:\n  summary hello\nResolution:\n  resolution hello\nContext:\n`hello`\n")
     end
 
     it "raising instance works" do

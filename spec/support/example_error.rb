@@ -1,5 +1,5 @@
 class ExampleError < Erlash::Base
   problem 'problem'
-  sumary 'sumary'
+  summary 'summary'
   resolution 'resolution'
 end

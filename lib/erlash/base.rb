@@ -4,8 +4,8 @@ module Erlash
       def problem(arg = nil, &block)
         @problem = block || arg
       end
-      def sumary(arg = nil, &block)
-        @sumary = block || arg
+      def summary(arg = nil, &block)
+        @summary = block || arg
       end
       def resolution(arg = nil, &block)
         @resolution = block || arg
@@ -23,15 +23,15 @@ module Erlash
     def problem
       @problem ||= exec_config(self.class.instance_variable_get(:@problem))
     end
-    def sumary
-      @sumary ||= exec_config(self.class.instance_variable_get(:@sumary))
+    def summary
+      @summary ||= exec_config(self.class.instance_variable_get(:@summary))
     end
     def resolution
       @resolution ||= exec_config(self.class.instance_variable_get(:@resolution))
     end
 
     def hints?
-      !!(problem || sumary || resolution)
+      !!(problem || summary || resolution)
     end
 
     private
@@ -39,7 +39,7 @@ module Erlash
     def set_formatter
       formatter.tap do |f|
         f << Tip.new('Problem:', problem) if problem
-        f << Tip.new('Sumary:', sumary) if sumary
+        f << Tip.new('Summary:', summary) if summary
         f << Tip.new('Resolution:', resolution) if resolution
         f << Context.new(self, context)
       end
