@@ -58,24 +58,47 @@ raise Myerror.new(user_id: 1, request_id: 120, controller: 'users_controller')
 
 ### Add formatters
 ```ruby
+
 class User
   def email
     "mail@example.com"
   end
   def id; 1 end
+  def errors
+    "email already token"
+  end
 end
 
 class Erlash::UserFormatter < Erlash::TemplateFormatter
   def format
-    "id: #{object.id}, email: #{object.email}"
+    format_elem({
+      id: object.id,
+      email: object.email
+    })
   end
 end
 
 Erlash.formatters.register(User, Erlash::UserFormatter)
 
-class RequestError < Erlash::Base; end
-RequestError.new(request_id: '123', user: User.new, endpoint: 'PUT /users/1', params: {email: "another@email.com"})
+class RequestError < Erlash::Base
+  problem "User is unable to update his email"
+  sumary do |context|
+    "Validation errors: #{context[:user].errors}"
+  end
+end
 
+raise RequestError.new(request_id: '123', user: User.new, endpoint: 'PUT /users/1', params: {email: "another@email.com"})
+# =>
+# RequestError:
+#   Problem:
+#     User is unable to update his email
+#   Sumary:
+#     Validation errors: email already token
+#   Context:
+#     - request_id: `123`
+#     - user: { id: 1, email: `mail@example.com` }
+#     - endpoint: `PUT /users/1`
+#     - params: { email: `another@email.com` }
 ```
 
 ## Development

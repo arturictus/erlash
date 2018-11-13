@@ -8,6 +8,7 @@ RSpec.describe Erlash do
                      user: User.new,
                      endpoint: 'PUT /users/1',
                      params: {email: "another@email.com"})
+    raise inst
     expect(inst.message).to eq("")
   end
 end
