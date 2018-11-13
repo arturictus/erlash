@@ -98,7 +98,7 @@ class MyUserFormatter < Erlash::TemplateFormatter
 end
 ```
 
-__To register your formatter:__
+__Register your formatter:__
 
 When registering a formatter you should provide the class is going to format as first argument.
 Arguments:
