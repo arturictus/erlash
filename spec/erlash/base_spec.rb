@@ -63,5 +63,11 @@ module Erlash
         end
       end
     end
+
+    describe 'skip?' do
+      it do
+        expect(ExampleError.new.skip?).to be false  
+      end
+    end
   end
 end

@@ -46,10 +46,6 @@ module Erlash
 
     private
 
-    # def get_config(variable)
-    #   self.class.instance_variable_get(:@problem)
-    # end
-
     def set_formatter
       formatter.tap do |f|
         f << Tip.new('Problem:', problem) if problem
