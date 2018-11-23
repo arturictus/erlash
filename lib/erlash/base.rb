@@ -13,7 +13,7 @@ module Erlash
       def display_context(arg)
         @display_context = arg
       end
-      def _display_contextkbk
+      def _display_context
         defined?(@display_context) ? @display_context : true
       end
     end
