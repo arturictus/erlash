@@ -40,10 +40,7 @@ module Erlash
       !!(problem || summary || resolution)
     end
 
-    def valid?
-      to_s
-      true
-    rescue => e
+    def skip?
       false
     end
 
@@ -60,10 +57,6 @@ module Erlash
         f << Tip.new('Resolution:', resolution) if resolution
         f << Context.new(self, context) if display_context?
       end
-    end
-
-    def skip?
-      false
     end
 
     def default_opts
