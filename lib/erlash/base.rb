@@ -13,7 +13,7 @@ module Erlash
       def display_context(arg)
         @display_context = arg
       end
-      def _display_context
+      def _display_contextkbk
         defined?(@display_context) ? @display_context : true
       end
     end
@@ -40,7 +40,18 @@ module Erlash
       !!(problem || summary || resolution)
     end
 
+    def valid?
+      to_s
+      true
+    rescue => e
+      false
+    end
+
     private
+
+    # def get_config(variable)
+    #   self.class.instance_variable_get(:@problem)
+    # end
 
     def set_formatter
       formatter.tap do |f|
@@ -49,6 +60,10 @@ module Erlash
         f << Tip.new('Resolution:', resolution) if resolution
         f << Context.new(self, context) if display_context?
       end
+    end
+
+    def skip?
+      false
     end
 
     def default_opts
