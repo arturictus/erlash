@@ -3,6 +3,9 @@ require "erlash"
 require 'pry'
 require 'erlash/testing'
 
+ENV['ENV'] ||= 'test'
+
+
 Dir[File.expand_path("./support/**/*.rb", __dir__)].each { |f| require f }
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
