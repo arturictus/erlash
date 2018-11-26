@@ -56,7 +56,6 @@ module Erlash
       !raise_malformed_error?
     end
 
-
     def logger
       Erlash.logger
     end

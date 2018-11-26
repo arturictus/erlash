@@ -32,6 +32,7 @@ require 'erlash/main_hash'
 require 'erlash/formatter'
 require 'erlash/formatters'
 require 'erlash/error_logger'
+require 'erlash/error_raiser'
 
 Erlash.formatters.tap do |f|
   f.register Array, Erlash::ArrayFormatter
