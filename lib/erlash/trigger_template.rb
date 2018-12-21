@@ -1,8 +1,12 @@
 module Erlash
 
   class TriggerTemplate
+    def self.call(*args)
+      new(*args).call
+    end
+
     attr_reader :klass, :context
-    def initialize(klass, context)
+    def initialize(klass, context = {})
       @klass = klass
       @context = context
     end

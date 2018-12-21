@@ -12,7 +12,7 @@ module Erlash
     end
 
     def logger
-      @logger ||= Logger.new(STOUT)
+      @logger ||= Logger.new(STDOUT)
     end
 
     def config
