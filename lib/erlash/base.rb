@@ -40,6 +40,10 @@ module Erlash
       !!(problem || summary || resolution)
     end
 
+    def skip?
+      false
+    end
+
     private
 
     def set_formatter
