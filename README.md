@@ -61,7 +61,7 @@ raise Myerror, { user_id: 1, request_id: 120, controller: 'users_controller' }
 ```
 
 ```ruby
-class MyError < Erlash::Base;
+class MyError < Erlash::Base
   problem -> { |context| "Please user `#{context[:user_id]}` be careful" }
   summary "This error usually happens when user is desperate for the bug"
   resolution -> { |context| "User.find(#{context[:user_id]}).fix" }
