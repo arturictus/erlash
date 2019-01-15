@@ -1,6 +1,6 @@
 # Erlash
 
-Erlash is a easy way to create meaningful errors.
+Erlash simplifies and abstracts the hard part of creating meaningful errors.
 The ruby implementation for errors is hard and tedious to create errors that explain
 what exactly the error was.
 In production you can find errors that do not explain the context and gives you no clue what's going on.
