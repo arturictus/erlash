@@ -3,7 +3,7 @@ module Erlash
   class ErrorRaiser < TriggerTemplate
     def execute
       if error == :malformed
-        raise Klass, context
+        raise klass, context
       else
         raise error
       end

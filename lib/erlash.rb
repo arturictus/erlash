@@ -4,7 +4,7 @@ require "logger"
 
 module Erlash
   class << self
-    attr_accessor :after_logging_error, :skip_logging, :raise_malformed_error
+    attr_accessor :after_logging, :skip_logging, :raise_malformed_error
     attr_writer :logger, :env
 
     def formatters
@@ -21,6 +21,14 @@ module Erlash
 
     def env
       @env || ENV['RAILS_ENV'] || ENV['RACK_ENV'] || ENV['ENV'] || 'development'
+    end
+
+    def self.log(error, context = {}, type = :error)
+      ErrorLogger.call(error, context)
+    end
+
+    def self.raise(error, context = {})
+      ErrorRaiser.call(error, context)
     end
   end
 end

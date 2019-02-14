@@ -1,8 +1,7 @@
 # Erlash
 
-Erlash is a easy way to create meaningful errors.
-The ruby implementation for errors is hard and tedious to create errors that explain
-what exactly the error was.
+Erlash, errors that make sense.
+The ruby implementation for errors is tedious and makes it hard to write descriptive errors.
 In production you can find errors that do not explain the context and gives you no clue what's going on.
 
 You can find errors like:
@@ -27,10 +26,6 @@ RequestError:
    - endpoint: `PUT /users/1`
    - params: { email: `another@email.com` }
 ```
-
-To build this kind of errors with the standard library is very tedious and not reusable.
-With erlash creating meaningful errors is easy.
-
 
 ## Installation
 
@@ -63,7 +58,7 @@ raise Myerror, { user_id: 1, request_id: 120, controller: 'users_controller' }
 ```ruby
 class MyError < Erlash::Base;
   problem -> { |context| "Please user `#{context[:user_id]}` be careful" }
-  summary "This error usually happens when user is desperate for the bug"
+  summary "This error usually happens when user clicks too fast"
   resolution -> { |context| "User.find(#{context[:user_id]}).fix" }
 end
 
@@ -72,7 +67,7 @@ raise Myerror, { user_id: 1, request_id: 120, controller: 'users_controller' }
 #  Problem:
 #    Please user `1` be careful
 #  Summary:
-#    This error usually happens when user is desperate for the bug
+#    This error usually happens when user clicks too fast
 #  Resolution:
 #    User.find(1).fix
 #  Context:
@@ -83,12 +78,11 @@ raise Myerror, { user_id: 1, request_id: 120, controller: 'users_controller' }
 
 ### Formatters
 Erlash is fully customizable.
-You can add formatters for your objects or override the default ones.
+You can add formatters for your objects or override the defaults.
 
 __Create your formatter:__
 
-Create a class that inherits from `Erlash::TemplateFormatter` and add a `format`
-method to it.
+Create a class that inherits from `Erlash::TemplateFormatter` and implement the method `format`.
 
 ```ruby
 class MyUserFormatter < Erlash::TemplateFormatter

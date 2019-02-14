@@ -6,7 +6,7 @@ module Erlash
     end
 
     attr_reader :klass, :context
-    def initialize(klass, context = {})
+    def initialize(klass, context = nil)
       @klass = klass
       @context = context
     end
@@ -72,7 +72,7 @@ module Erlash
       klass.new(context)
     rescue => e
       raise(e) if raise_malformed_error?
-      logger.warn("[ErlashExt] malformed error: { class: #{klass}, context: #{context}}") if warn_malformed_error?
+      logger.warn("[Erlash] malformed error: { class: #{klass}, context: #{context}}") if warn_malformed_error?
       :malformed
     end
   end
